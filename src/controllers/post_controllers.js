@@ -4,7 +4,7 @@ export const createPost = async (req ,res) =>{
         const{title , content , author} = req.body;
         const newPost = new Post({title ,content, author })
         const savedPost = await  newPost.save();
-        res.status(201).json({message: "post is saved in database"});
+        res.status(201).json({message: "post is saved in database",post: savedPost});
 
     }catch(error){
         res.status(500).json({eroor: "Internel Server error is occured."});
@@ -43,5 +43,19 @@ export const updatePost = async (req , res) =>{
         }
     }catch(error){
         res.status(500).json({error: "Internel Error is occured."});
+    }
+};
+
+export const deletePost = async (req , res) =>{
+    try{
+        const post_id = req.params.id;
+        const postAvailable = await Post.findOne({_id: post_id});
+        if(!postAvailable){
+            res.status(404).json({message: "The post is not found"});
+        }
+        await Post.findByIdAndDelete(post_id);
+        res.status(200).json({message: "The post is deleted successfully."});
+    }catch(error){
+        res.status(500).json({message: "Internel Server is occured. "});
     }
 }
