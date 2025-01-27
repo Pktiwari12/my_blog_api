@@ -18,6 +18,7 @@ connectDB().then(()=>{
 const app = express();
 app.use(bodyParser.json());
 app.use("/api/post",route);
+app.use("./api/post",route);
 export default app;
 
 
