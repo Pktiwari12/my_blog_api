@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 console.log("Environment varibale is loaded.");
 import express from "express";
+import logger from "morgan";
 import bodyParser from "body-parser";
 import  connectDB  from "./init/db.js";
 import route from "./routes/post_route.js"
@@ -16,6 +17,7 @@ connectDB().then(()=>{
     console.log("db is conneced.");
 })
 const app = express();
+app.use(logger('tiny'));
 app.use(bodyParser.json());
 app.use("/api/post",route);
 // app.use("./api/post",route);
