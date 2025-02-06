@@ -1,6 +1,7 @@
 import Post from "./../model/post_model.js";
 export const createPost = async (req ,res) =>{
     try{
+        // console.log("request body \n"+JSON.stringify(req.body, null , 2));
         const{title , content , author} = req.body;
         const newPost = new Post({title ,content, author })
         const savedPost = await  newPost.save();

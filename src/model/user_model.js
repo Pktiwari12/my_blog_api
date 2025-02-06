@@ -14,18 +14,22 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    profileImage: {
-        type: String,
-        required: true
-    },
     role: {
         // 1- super-admin , 2- normal-admin , 3- normal user
         type: Number,
         default: 3
         
+    },
+    profileImage: {
+        type: String,
+        required: true
     }
 
 });
 
 const userModel = mongoose.model("User", userSchema);
 export default userModel;
+
+
+// next
+1. // To add more features of user like isverified. and explore more key: value pairs for better user. 
