@@ -30,7 +30,8 @@ const register = async (req , res) =>{
         })
     }
     const hashedPassword = await bcrypt.hash(password , 10);
-    const newUser = new User({name , email , password: hashedPassword, profileImage: "./../public/image/"+req.file.filename}, role);
+    const file = req.files.profileImage[0];
+    const newUser = new User({name , email , password: hashedPassword, profileImage: "./../public/image/"+file.filename}, role);
     const savedUser = await newUser.save();
     console.log(`The saved user is ${savedUser}`);  
     res.status(201).json({

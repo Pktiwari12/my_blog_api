@@ -27,10 +27,25 @@ const storage = multer.diskStorage({
 });
 
 // file filter 
+const fileFilter = (req , file ,cb) =>{
+    const allowedMimeTypes = ["image/jpeg", "image/jpg", "image/png"];
+    if(allowedMimeTypes.includes(file.mimetype)){
+        cb(null , true);
+    }else{
+        // cb(null, false);
+        cb(new Error("Only jpeg , jpg or png format ara allowed !", false));
+    }
+}
 
 // instance of multer and export 
-const upload = multer({storage: storage});
-export default upload;
+const picUpload = multer({
+    storage: storage,
+    fileFilter: fileFilter,
+
+}).fields(
+    [{name: "profileImage", maxCount: 1}]
+);
+export default picUpload;
 
 
 

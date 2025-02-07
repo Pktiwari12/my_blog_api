@@ -2,7 +2,7 @@ import {check} from "express-validator";
 
 const signUpValidator = [
     check('name', "Please Enter your name.").notEmpty(),
-    
+
     check('email')
     .isEmail()
     .withMessage("Invaild Email")
@@ -23,7 +23,8 @@ const signUpValidator = [
 
     check("profileImage")
     .custom((value, {req} ) =>{
-        if(req.file.mimetype === 'image/jpeg' || req.file.mimetype === 'image/png'){
+        const file = req.files.profileImage[0];
+        if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' ||   file.mimetype === "image/jpg"){
             return true;
         }
         else{
