@@ -1,5 +1,0 @@
-import {check} from "express-validator";
-
-const signUpValidator = [
-    check('name', "Please Enter your name.").notEmpty(),
-]

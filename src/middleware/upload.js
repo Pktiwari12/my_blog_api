@@ -21,11 +21,12 @@ const storage = multer.diskStorage({
         cb(null , path.join(__diraname, "./../public/image"));
     }, 
     filename: (req , file , cb) =>{
-        const fname = Date.now + "-"+file.originalname;
+        const fname = Date.now() + "-"+file.originalname;
         cb(null , fname);
     }
 });
 
+// file filter 
 
 // instance of multer and export 
 const upload = multer({storage: storage});
