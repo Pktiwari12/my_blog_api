@@ -115,4 +115,56 @@ const sendVerificationEmail = async (req , res) =>{
         })
     }
 }
-export {register,sendVerificationEmail};
+
+const verifyUserByCode = async (req , res) =>{
+   try{
+        const {email, verificationCode} = req.body;
+        // check whether user exist or not
+        const userData = await User.findOne({email: email});
+        if(!userData){
+            return res.status(404).json(
+                {
+                    success: false,
+                    message: "User not found.Email does not exist"
+                }
+            )
+        }
+        if(userData.isVerified == true){
+            return res.status(400).json(
+                {
+                    success: false,
+                    message: "The user is already verified."
+                }
+            )
+        }
+        // check whether the user input correct code or not 
+        if(userData.verificationCode != verificationCode){
+            return res.status(400).json(
+                {
+                    success: false,
+                    message: "Please Enter correct verification code"
+                }
+            )
+        }
+        userData.isVerified = true;
+        userData.verificationCode = null;
+        await userData.save();
+        res.status(200).json(
+            {
+                success: true,
+                message: "Email id is verirfied successfully."
+            }
+        )
+
+
+   }catch(error){
+        res.status(500).json(
+            {
+                success: false,
+                message: "The internel server error is occured.",
+                error: error.message
+            }
+        )
+   }
+}
+export {register,sendVerificationEmail,verifyUserByCode};

@@ -39,5 +39,15 @@ const emailValidtor = [
     check('email')
     .isEmail().withMessage("Please Enter your vaild email")
     .notEmpty().withMessage("Email is required.")
+];
+
+const verifyUserValidator = [
+    check('email')
+    .isEmail().withMessage("Please Enter vaild email")
+    .notEmpty().withMessage("Email id is required."),
+
+    check('verificationCode')
+    .notEmpty().withMessage("Please Enter verification code.")
+
 ]
-export {signUpValidator, emailValidtor};
+export {signUpValidator, emailValidtor, verifyUserValidator};
