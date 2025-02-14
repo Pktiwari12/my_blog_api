@@ -1,22 +1,22 @@
 import User from "./../model/user_model.js";
 import bcrypt from "bcrypt";
-import {validationResult} from "express-validator";
+// import {validationResult} from "express-validator";
 import { sendEmail } from "../utils/mailer.js";
 // anonymous function to create user in database
 const register = async (req , res) =>{
     try{
 
         // validating the request 
-        const errors = validationResult(req);
-        if(!errors.isEmpty()){
-            {
-                return res.status(400).json({
-                    success: false,
-                    msg: "Validation errors is occured",
-                    errors: errors.array()
-                })
-            }
-        }
+        // const errors = validationResult(req);
+        // if(!errors.isEmpty()){
+        //     {
+        //         return res.status(400).json({
+        //             success: false,
+        //             msg: "Validation errors is occured",
+        //             errors: errors.array()
+        //         })
+        //     }
+        // }
 
         // If validation is success
         // extracting the values by req.body
@@ -43,7 +43,7 @@ const register = async (req , res) =>{
     const newUser = new User({name , email , password: hashedPassword, profileImage: "./../public/image/"+file.filename}, role);
     // after the sign up of user , the verifcation link is sended to his mail
     try {
-        const mailMessage = '<p>Hi '+newUser.name +'please <a href = "http://localhost:3000/mail-verification/?id='+newUser._id+'">verify</a> your email </p>';
+        const mailMessage = '<p>Hi '+newUser.name +' please <a href = "http://localhost:3000/mail-verification/?id='+newUser._id+'">verify</a> your email </p>';
         sendEmail(email, "Email Verification", mailMessage);
     } catch (error) {
         console.log(error);
