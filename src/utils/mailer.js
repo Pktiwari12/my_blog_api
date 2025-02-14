@@ -17,17 +17,23 @@ const transport = nodemailer.createTransport({
     }
 });
 
-const sendEmail = async (email , subject , content) =>{
+const sendEmail = async ({email , subject , content, verifyCode}) =>{
     try{
         // defining object of mail option 
+        console.log(verifyCode);
         const mailOptions = {
             from: process.env.SMTP_MAIL,
             to: email,
             subject: subject,
-            html: content
+            html:`
+                    <div>
+                        <h3>Use this below code to ${content}</h3>
+                        <p><strong>Code : </strong> ${verifyCode}</p>
+                    </div>
+                `
         };
         // then the passing the object of message into the transporter
-        transport.sendMail(mailOptions , (error , info) =>{
+        await transport.sendMail(mailOptions , (error , info) =>{
             if(error){
                 console.log("error");
                 throw error;
