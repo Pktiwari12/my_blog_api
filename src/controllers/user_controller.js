@@ -68,4 +68,37 @@ const register = async (req , res) =>{
     }
 }
 
-export {register};
+// api to send Email
+const sendVerificationEmail = async (req , res) =>{
+    try{
+        const {email} = req.body;
+        const userData = await User.findOne({email: email});
+        if(!userData){
+            return res.status(404).json(
+                {
+                    success: false,
+                    message: "User not found. Email does not exist"
+                }
+            )
+        }
+        if(userData.isVerified == true){
+            return res.status(400).json(
+                {
+                    success: false,
+                    message: "User is already verified."
+                }
+            )
+        }
+        
+    
+
+    }catch(error){
+        res.status(500).json({
+            success: false,
+            msg: "Internel Server Error is occured",
+            error: error.message
+
+        })
+    }
+}
+export {register,sendVerificationEmail};

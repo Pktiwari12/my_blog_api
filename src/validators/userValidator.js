@@ -33,5 +33,11 @@ const signUpValidator = [
     })
     .withMessage("Please upload image jpeg or png format")
 
+];
+
+const emailValidtor = [
+    check('email')
+    .isEmail().withMessage("Please Enter your vaild email")
+    .notEmpty().withMessage("Email is required.")
 ]
-export {signUpValidator};
+export {signUpValidator, emailValidtor};
