@@ -50,4 +50,34 @@ const verifyUserValidator = [
     .notEmpty().withMessage("Please Enter verification code.")
 
 ]
-export {signUpValidator, emailValidtor, verifyUserValidator};
+
+const recoverPasswordValidator = [
+    check('email')
+    .isEmail().withMessage("Please Enter vaild email.")
+    .notEmpty().withMessage("Email is required."),
+
+    check('forgotCode')
+    .notEmpty().withMessage("Please Enter the code which has been shared your mail."),
+
+    check('newPassword')
+    .notEmpty().withMessage("Please enter new password.")
+    .isStrongPassword({
+        minLength: 8,
+        minUppercase: 1,
+        minLowercase: 1,
+        minNumbers: 1,
+        minSymbols: 1
+
+    }).withMessage("Please Enter strong password"),
+
+    check('confirmPassword')
+    .notEmpty().withMessage("Please enter confirm password.")
+    .isStrongPassword({
+        minLength: 8,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1
+    }).withMessage("Please Enter strong password")
+]
+export {signUpValidator, emailValidtor, verifyUserValidator, recoverPasswordValidator};

@@ -209,4 +209,50 @@ const forgotPassword = async (req , res) =>{
 
 };
 
-export {register,sendVerificationEmail,verifyUserByCode,forgotPassword};
+const recoverPassword = async (req, res) =>{
+    try{
+        const{email, forgotCode, newPassword, confirmPassword } = req.body;
+        console.log(confirmPassword);
+        console.log(newPassword);
+        console.log(confirmPassword == newPassword);
+        if(newPassword != confirmPassword){
+            return res.status(400).json({
+                success: false,
+                message: "Confirm password does not matches with new password",
+            })
+        }
+        const userData = await User.findOne({email: email});
+        if(!userData){
+            return res.status(404).json({
+                success: false,
+                message: "User not found."
+            })
+        }
+        if(forgotCode != userData.forgotPasswordCode){
+            return res.status(400).json({
+                success: false,
+                message: "Please Enter correct code which is shared to your email."
+            })
+        }
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        userData.password = hashedPassword;
+        userData.forgotPasswordCode = null;
+        await userData.save();
+        res.status(200).json({
+            success: true,
+            message: "The Password is updated."
+        })
+    }catch(error){
+        res.status(500).json({
+            success: false, 
+            message : "Internel Server is occured.",
+            error : error.message
+        })
+    }
+}
+export {register,
+    sendVerificationEmail,
+    verifyUserByCode,
+    forgotPassword,
+    recoverPassword
+};
