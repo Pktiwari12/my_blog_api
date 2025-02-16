@@ -167,4 +167,46 @@ const verifyUserByCode = async (req , res) =>{
         )
    }
 }
-export {register,sendVerificationEmail,verifyUserByCode};
+
+const forgotPassword = async (req , res) =>{
+    try{
+        // extracting the input
+        const {email} = req.body;
+        // check whether user exist or not
+        const userData = await User.findOne({email: email});
+        if(!userData){
+            return res.status(404).json(
+                {
+                    success: false,
+                    message: "User does not exist"
+                }
+            )
+        }
+        // generate the code sothat user can update the password by this code.
+        const code = generateCode(4);
+
+        // Now we have to save this password in database, sothat when user input this code to updata
+        // his password. then we can check whether code is correct or not.so we have to add one more key in user model
+        userData.forgotPasswordCode = code;
+        await userData.save();
+
+        sendEmail({email: email, subject: "To Update Password", content: "update password", verifyCode: code});
+
+        res.status(200).json({
+            success: true,
+            message: "To update the password, the code has been sent to email."
+        })
+
+        }catch(error){
+            res.status(500).json(
+                {
+                    success: false,
+                    message: "Internel Server error is occured.",
+                    error: error.message
+                }
+            )
+        }
+
+};
+
+export {register,sendVerificationEmail,verifyUserByCode,forgotPassword};

@@ -27,6 +27,9 @@ const userSchema = new mongoose.Schema({
     verificationCode: {
         type: String
     },
+    forgotPasswordCode: {
+        type: String
+    },
     isVerified: {
         type: Boolean,
         default: false
